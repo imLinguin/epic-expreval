@@ -2,7 +2,7 @@ from enum import Enum, auto
 from typing import Any, Optional
 import re
 
-from evalctx import EvaluationContext
+from evalctx import OPERATOR_MAP, EvaluationContext
 from functions import FUNCTION_DEFINITIONS
 import logging
 
@@ -31,7 +31,7 @@ class Token:
         return f"{self.token_type} {self.name}" + ("(" + str(self.param) +")" if self.param is not None  else "")
 
 
-operators = ["&&", "||", "==", "=", "+", "-", ">", "<", ">=", "<="]
+operators = list(OPERATOR_MAP.keys())
 
 end_bracket = re.compile(r"\)($|\s)")
 def find_matching_bracket(index:int, input:str) -> int | None:
@@ -50,7 +50,7 @@ def parse(input: str) -> list[Token]:
     
     while i < len(input):
         ch = input[i]
-        if re.match(r"[a-zA-Z0-9&\|=+-<>]", ch):
+        if re.match(r"[a-zA-Z0-9&\|=\+\-<>!]", ch):
             if token_type is None:
                 token_type = TokenType.Value
                 name_buf += ch

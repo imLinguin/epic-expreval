@@ -11,13 +11,22 @@ def or_func(a: Any, b: Any) -> bool:
 
 OPERATOR_MAP = {
     "&&": and_func,
+    "&": and_func,
+    "AND": and_func,
     "||": or_func,
+    "|": or_func,
+    "OR": or_func,
     "=": operator.eq,
+    ":": operator.eq,
     "==": operator.eq,
+    "!=": operator.ne,
+    "!:": operator.ne,
     ">": operator.gt,
     "<": operator.lt,
     "<=": operator.le,
+    "<:": operator.le,
     ">=": operator.ge,
+    ">:": operator.ge,
 }
 
 @dataclass
