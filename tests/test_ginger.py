@@ -8,3 +8,4 @@ def test_asterisk():
     assert tx.execute("bad version")
     assert tx.execute("nice")
     assert tx.execute("v1.0.2")
+    assert tx.execute("2.16.1")

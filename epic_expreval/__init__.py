@@ -3,4 +3,10 @@ from .tokenizer import Tokenizer, Token, TokenType
 from .evalctx import EvaluationContext
 
 
-__all__ = ["Tokenizer", "Token", "TokenType", "EvaluationContext", "FUNCTION_DEFINITIONS"]
+__all__ = [
+    "Tokenizer",
+    "Token",
+    "TokenType",
+    "EvaluationContext",
+    "FUNCTION_DEFINITIONS",
+]

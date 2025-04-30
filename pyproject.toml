@@ -5,7 +5,7 @@ description = "Unreal Engine expression evaluator written in Python"
 authors = [
     {name = "Paweł Lidwin", email = "linguin@tutanota.com"},
 ]
-dependencies = []
+dependencies = ["psutil>=7.0.0"]
 keywords = ["epic games", "unreal engine", "legendary-gl"]
 requires-python = ">=3.10"
 readme = "README.md"

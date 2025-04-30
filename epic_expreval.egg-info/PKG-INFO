@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: epic-expreval
+Version: 0.1.0
+Summary: Unreal Engine expression evaluator written in Python
+Author-email: Paweł Lidwin <linguin@tutanota.com>
+License: MIT
+Project-URL: homepage, https://github.com/imLinguin/epic-expreval
+Project-URL: issues, https://github.com/imLinguin/epic-expreval/issues
+Project-URL: repository, https://github.com/imLinguin/epic-expreval.git
+Keywords: epic games,unreal engine,legendary-gl
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: psutil>=7.0.0
+Dynamic: license-file
