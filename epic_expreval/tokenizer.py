@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 import re
 import logging
 
@@ -12,27 +12,6 @@ class TokenType(Enum):
     Operator = auto()
     Scope = auto()
     Value = auto()
-
-
-class Token:
-    token_type: TokenType
-    name: str
-    param: Optional[Any]
-
-    def __init__(self, t, n, p):
-        self.token_type = t
-        self.name = n
-        self.param = None
-        if len(p) > 0:
-            self.param = p
-            if p.isnumeric():
-                self.param = int(p)
-
-    def __str__(self):
-        return f"{self.token_type} {self.name}" + (
-            "(" + str(self.param) + ")" if self.param is not None else ""
-        )
-
 
 end_bracket = re.compile(r"\)($|\s)")
 
@@ -101,7 +80,7 @@ class Tokenizer:
         while stack:
             assert stack[-1] != "("
             output.append(stack.pop())
-
+        
         return output
 
     def _get_tokens(self) -> list[str]:
@@ -119,7 +98,7 @@ class Tokenizer:
         while i < len(self.expression):
             ch = self.expression[i]
             if re.match(r"[a-zA-Z0-9&\|=\+\-<>\^\*!\/\%]", ch):
-                if ch in ["+", "-", "^", "*", "/", "%"]:
+                if ch in ["+", "-", "^", "*", "/", "%", "!"]:
                     if name_buf:
                         tokens.append(name_buf)
                         name_buf = ""

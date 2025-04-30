@@ -12,8 +12,8 @@ def or_func(a: Any, b: Any) -> bool:
     return a or b
 
 
-def not_func(a: Any, b: Any) -> bool:
-    return a or b
+def not_func(a: Any, _b: Any) -> bool:
+    return not a
 
 
 OPERATOR_MAP = {
