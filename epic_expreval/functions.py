@@ -1,6 +1,5 @@
 import re
-from typing import Any
-from evalctx import EvaluationContext
+from .evalctx import EvaluationContext
 
 def regex(context: EvaluationContext, param: str) -> bool:
     mx = re.compile(param)

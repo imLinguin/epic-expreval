@@ -1,0 +1,33 @@
+[project]
+name = "epic-expreval"
+version = "0.1.0"
+description = "Unreal Engine expression evaluator written in Python"
+authors = [
+    {name = "Paweł Lidwin", email = "linguin@tutanota.com"},
+]
+dependencies = []
+keywords = ["epic games", "unreal engine", "legendary-gl"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
+[project.urls]
+homepage = "https://github.com/imLinguin/epic-expreval"
+issues = "https://github.com/imLinguin/epic-expreval/issues"
+repository = "https://github.com/imLinguin/epic-expreval.git"
+
+[tool.pdm]
+distribution = true 
+
+[tool.pdm.scripts]
+test = "pytest"
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+pythonpath = "src"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "pytest>=8.3.5",
+]

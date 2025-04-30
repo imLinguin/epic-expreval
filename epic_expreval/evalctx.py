@@ -29,6 +29,7 @@ OPERATOR_MAP = {
     ">:": operator.ge,
 }
 
+
 @dataclass
 class Operation:
     left: Any = None
@@ -48,8 +49,8 @@ class EvaluationContext:
 
     scope_data: list[Operation]
 
-    def __init__(self, input: str):
-        self.input = input
+    def __init__(self):
+        self.input = ""
         self.regex_result = None
         
         self.scope_data = [Operation()]
