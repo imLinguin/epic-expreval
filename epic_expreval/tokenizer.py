@@ -27,7 +27,7 @@ class Tokenizer:
         self.expression = exp
         self.wildcard = exp == "*"
         self.context = ctx
-        self.tokens = self._parse()
+        self.tokens = [] 
 
     def extend_functions(
         self, new_functions: dict[str, Callable[[EvaluationContext, str], Any]]
@@ -38,6 +38,10 @@ class Tokenizer:
         self, new_functions: dict[str, Callable[[EvaluationContext, str], Any]]
     ):
         self.functions = new_functions
+
+
+    def compile(self):
+        self.tokens = self._parse()
 
     def _parse(self) -> list[str]:
         output = []
@@ -159,6 +163,7 @@ class Tokenizer:
     def execute(self, input: str) -> bool:
         if self.wildcard:
             return True
+
         logger = logging.getLogger("EVALUATOR")
         self.context.set_input(input)
 
