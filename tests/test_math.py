@@ -29,3 +29,13 @@ def test_exec_order():
     tk = Tokenizer("(2+4)^2", EvaluationContext())
     tk.compile()
     assert tk.execute("") == 36
+
+
+def test_comparison():
+    tk = Tokenizer("3 < 2 * 2", EvaluationContext())
+    tk.compile()
+    assert tk.execute("")
+    
+    tk = Tokenizer("34 < 15 || 3 < 6", EvaluationContext())
+    tk.compile()
+    assert tk.execute("")

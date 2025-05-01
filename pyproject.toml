@@ -18,9 +18,9 @@ classifiers = [
 ]
 
 [project.urls]
-homepage = "https://github.com/imLinguin/epic-expreval"
-issues = "https://github.com/imLinguin/epic-expreval/issues"
-repository = "https://github.com/imLinguin/epic-expreval.git"
+Homepage = "https://github.com/imLinguin/epic-expreval"
+Issues = "https://github.com/imLinguin/epic-expreval/issues"
+Repository = "https://github.com/imLinguin/epic-expreval.git"
 
 [tool.pdm]
 distribution = true 
