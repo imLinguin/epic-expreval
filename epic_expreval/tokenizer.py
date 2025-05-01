@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 import re
 import logging
 
@@ -17,7 +17,7 @@ class TokenType(Enum):
 end_bracket = re.compile(r"\)($|\s)")
 
 
-def find_matching_bracket(index: int, input: str) -> int | None:
+def find_matching_bracket(index: int, input: str) -> Optional[int]:
     find = end_bracket.search(input, index)
     return find and find.start()
 
