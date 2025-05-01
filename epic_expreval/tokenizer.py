@@ -13,6 +13,7 @@ class TokenType(Enum):
     Scope = auto()
     Value = auto()
 
+
 end_bracket = re.compile(r"\)($|\s)")
 
 
@@ -27,7 +28,7 @@ class Tokenizer:
         self.expression = exp
         self.wildcard = exp == "*"
         self.context = ctx
-        self.tokens = [] 
+        self.tokens = []
 
     def extend_functions(
         self, new_functions: dict[str, Callable[[EvaluationContext, str], Any]]
@@ -38,7 +39,6 @@ class Tokenizer:
         self, new_functions: dict[str, Callable[[EvaluationContext, str], Any]]
     ):
         self.functions = new_functions
-
 
     def compile(self):
         self.tokens = self._parse()
@@ -84,7 +84,7 @@ class Tokenizer:
         while stack:
             assert stack[-1] != "("
             output.append(stack.pop())
-        
+
         return output
 
     def _get_tokens(self) -> list[str]:
@@ -183,7 +183,7 @@ class Tokenizer:
                 res = func(self.context, str(arg or ""))
                 exec_stack.append(res)
             elif token in OPERATOR_MAP:
-                if OPERATOR_MAP[token][1] == 'L':
+                if OPERATOR_MAP[token][1] == "L":
                     b = exec_stack.pop()
                     if type(b) == str and b.isnumeric():
                         b = int(b)
@@ -195,8 +195,10 @@ class Tokenizer:
                     a = exec_stack.pop()
                     if type(a) == str and a.isnumeric():
                         a = int(a)
-                    exec_stack.append(Operation(bool(a), OPERATOR_MAP[token][2], None).eval())
+                    exec_stack.append(
+                        Operation(bool(a), OPERATOR_MAP[token][2], None).eval()
+                    )
             else:
                 exec_stack.append(token)
 
-        return exec_stack[0] 
+        return exec_stack[0]

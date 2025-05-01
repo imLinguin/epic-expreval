@@ -17,12 +17,14 @@ def regex_group_int(context: EvaluationContext, param: str) -> int:
 def regex_group_string(context: EvaluationContext, param: str) -> str:
     return context.regex_result and context.regex_result.group(int(param)) or ""
 
+
 def ram_gb(_context: EvaluationContext, _param: str) -> int:
-    return psutil.virtual_memory().total // 1024 ** 3 + 1
+    return psutil.virtual_memory().total // 1024**3 + 1
+
 
 FUNCTION_DEFINITIONS = {
     "Regex": regex,
     "RegexGroupInt64": regex_group_int,
     "RegexGroupString": regex_group_string,
-    "RandomAccessMemoryGB": ram_gb
+    "RandomAccessMemoryGB": ram_gb,
 }

@@ -41,7 +41,7 @@ OPERATOR_MAP = {
     "*": (17, "L", operator.mul),
     "/": (17, "L", operator.truediv),
     "%": (17, "L", operator.mod),
-    "^": (18, "L", operator.pow)
+    "^": (18, "L", operator.pow),
 }
 
 
@@ -70,6 +70,3 @@ class EvaluationContext:
     def set_input(self, input: str):
         self.input = input
         self.regex_result = None
-                
-
-

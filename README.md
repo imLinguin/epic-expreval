@@ -2,6 +2,9 @@
 
 Epic expression evaluator
 
+![Test](https://github.com/imLinguin/epic-expreval/actions/workflows/test.yml/badge.svg)
+![Release](https://github.com/imLinguin/epic-expreval/actions/workflows/release.yml/badge.svg)
+
 ## Usage
 
 Basic usage is quite simple.
