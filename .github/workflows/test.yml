@@ -1,0 +1,15 @@
+name: Test
+
+on:
+  push:
+    branches: main
+
+jobs:
+  run-tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pdm-project/setup-pdm@v4
+      - run: pdm install
+      - run: pdm test

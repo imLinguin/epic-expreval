@@ -7,9 +7,15 @@ authors = [
 ]
 dependencies = ["psutil>=7.0.0"]
 keywords = ["epic games", "unreal engine", "legendary-gl"]
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 readme = "README.md"
 license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9"
+]
 
 [project.urls]
 homepage = "https://github.com/imLinguin/epic-expreval"
@@ -24,7 +30,6 @@ test = "pytest"
 
 [tool.pytest.ini_options]
 testpaths = "tests"
-pythonpath = "src"
 
 [dependency-groups]
 dev = [
