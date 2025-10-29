@@ -1,6 +1,6 @@
 [project]
 name = "epic-expreval"
-version = "0.1.0"
+version = "0.2.0"
 description = "Unreal Engine expression evaluator written in Python"
 authors = [
     {name = "Paweł Lidwin", email = "linguin@tutanota.com"},
