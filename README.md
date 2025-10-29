@@ -4,6 +4,7 @@ Epic expression evaluator
 
 ![Test](https://github.com/imLinguin/epic-expreval/actions/workflows/test.yml/badge.svg)
 ![Release](https://github.com/imLinguin/epic-expreval/actions/workflows/release.yml/badge.svg)
+![PyPI - Version](https://img.shields.io/pypi/v/epic-expreval)
 
 ## Usage
 
