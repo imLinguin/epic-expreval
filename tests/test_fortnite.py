@@ -24,3 +24,16 @@ def test_expr_falsy():
     assert not tk.execute("++Fortnite+Release-34.09-CL-41753727-Windows")
     assert not tk.execute("++Fortnite+Release-34.10-CL-39555843-Windows")
     assert not tk.execute("++Fortnite+Release-33.22-CL-41753727-Windows")
+
+
+def test_short_circut():
+    tk = Tokenizer(
+        "Regex(\\+\\+Fortnite\\+Release-(\\d+)\\.(\\d+).*-CL-(\\d+)-.*) && ((RegexGroupInt64(1) > 34 || (RegexGroupInt64(1) == 34 && RegexGroupInt64(2) >= 10)) && RegexGroupInt64(3) >= 39555844)",
+        ctx,
+    )
+    def regex_grp(ctx, inpt):
+        raise RuntimeError("Regex Groups shouldnt be accessed")
+    
+    tk.extend_functions({'RegexGroupInt64': regex_grp})
+    tk.compile()
+    assert not tk.execute("test123")

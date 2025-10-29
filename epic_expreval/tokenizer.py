@@ -3,7 +3,7 @@ from typing import Any, Callable, Optional
 import re
 import logging
 
-from .evalctx import OPERATOR_MAP, EvaluationContext, Operation
+from .evalctx import OPERATOR_MAP, EvaluationContext, Operation, FunctionCall, AST
 from .functions import FUNCTION_DEFINITIONS
 
 
@@ -28,7 +28,7 @@ class Tokenizer:
         self.expression = exp
         self.wildcard = exp == "*"
         self.context = ctx
-        self.tokens = []
+        self.tree = []
 
     def extend_functions(
         self, new_functions: dict[str, Callable[[EvaluationContext, str], Any]]
@@ -41,51 +41,63 @@ class Tokenizer:
         self.functions = new_functions
 
     def compile(self):
-        self.tokens = self._parse()
+        self.tree = self._parse()
 
-    def _parse(self) -> list[str]:
-        output = []
-        stack = []
+    def _parse(self) -> AST:
+        parse_stack = []
 
         tokens = self._get_tokens()
 
+        scopes: list[tuple[AST, AST]] = [(None, None)]
         i = 0
+       
         while i < len(tokens):
             token = tokens[i]
-            if token == "(":
-                stack.append(token)
+            node, current_node = scopes[-1]
+            new_node: AST = None
+            if token in self.functions:
+                ntoken = tokens[i+2] if tokens[i+2] not in "()" else None
+                new_node = FunctionCall(self.functions[token], ntoken)
+                i += 3 if ntoken else 2
+            elif token == "(":
+                scopes.append((None, None))
+                node = None
+                current_node = None
             elif token == ")":
-                while stack and stack[-1] in OPERATOR_MAP and stack[-1] != "(":
-                    output.append(stack.pop())
-                if stack and stack[-1] == "(":
-                    stack.pop()
-                if stack and stack[-1] in self.functions:
-                    output.append(stack.pop())
-            elif token in self.functions:
-                stack.append(token)
+                n, cn = scopes.pop()
+                node, current_node = scopes[-1]
+                if node is None:
+                    node = n
+                    current_node = n
+                else:
+                    current_node.attach_node(n, True)
             elif token in OPERATOR_MAP:
-                while (
-                    stack
-                    and stack[-1] in OPERATOR_MAP
-                    and (
-                        (OPERATOR_MAP[token][0] < OPERATOR_MAP[stack[-1]][0])
-                        or (
-                            OPERATOR_MAP[token][0] == OPERATOR_MAP[stack[-1]][0]
-                            and OPERATOR_MAP[token][1] == "L"
-                        )
-                    )
-                ):
-                    output.append(stack.pop())
-                stack.append(token)
+                new_node = Operation(token)
+                if parse_stack:
+                    new_node.attach_node(parse_stack.pop())
             else:
-                output.append(token)
+                if isinstance(current_node, Operation):
+                    current_node.attach_node(token)
+                else:
+                    parse_stack.append(token)
+                
+            if new_node:
+                if node is None:
+                    node = new_node
+                    current_node = node
+                elif isinstance(current_node, Operation):
+                    current_node = current_node.attach_node(new_node)
+                elif isinstance(node, FunctionCall):
+                    new_node.attach_node(node)
+                    node = new_node
+                    current_node = new_node
+
             i += 1
+            scopes[-1] = (node, current_node)
 
-        while stack:
-            assert stack[-1] != "("
-            output.append(stack.pop())
-
-        return output
+        if parse_stack:
+            scopes[0][1].attach_node(parse_stack.pop())
+        return scopes[0][0]
 
     def _get_tokens(self) -> list[str]:
         if self.wildcard:
@@ -160,45 +172,9 @@ class Tokenizer:
 
         return tokens
 
-    def execute(self, input: str) -> bool:
+    def execute(self, input: str) -> Any:
         if self.wildcard:
             return True
-
-        logger = logging.getLogger("EVALUATOR")
         self.context.set_input(input)
+        return self.tree.eval(self.context)
 
-        for token in self.tokens:
-            logger.debug(token)
-
-        exec_stack = []
-        for token in self.tokens:
-            if token in self.functions:
-                arg = None
-                if exec_stack:
-                    arg = exec_stack[-1]
-                if arg and arg not in OPERATOR_MAP:
-                    arg = exec_stack.pop()
-
-                func = self.functions[token]
-                res = func(self.context, str(arg or ""))
-                exec_stack.append(res)
-            elif token in OPERATOR_MAP:
-                if OPERATOR_MAP[token][1] == "L":
-                    b = exec_stack.pop()
-                    if type(b) == str and b.isnumeric():
-                        b = int(b)
-                    a = exec_stack.pop()
-                    if type(a) == str and a.isnumeric():
-                        a = int(a)
-                    exec_stack.append(Operation(a, OPERATOR_MAP[token][2], b).eval())
-                else:
-                    a = exec_stack.pop()
-                    if type(a) == str and a.isnumeric():
-                        a = int(a)
-                    exec_stack.append(
-                        Operation(bool(a), OPERATOR_MAP[token][2], None).eval()
-                    )
-            else:
-                exec_stack.append(token)
-
-        return exec_stack[0]

@@ -19,6 +19,10 @@ def test_custom_state():
             super().__init__()
             self.selection = set()
 
+        def reset(self):
+            super().reset()
+            self.selection = set()
+
         def set_input(self, input: str):
             return super().set_input(input)
 
