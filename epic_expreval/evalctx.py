@@ -69,6 +69,7 @@ class Operation(AST):
     op: str
     left: Any = None
     right: Any = None
+    scoped: bool = False
 
     def eval(self, context):
         operator = OPERATOR_MAP[self.op]
@@ -110,7 +111,7 @@ class Operation(AST):
         if isinstance(node, Operation) and not skip_replace:
             self_level = OPERATOR_MAP[self.op][0]
             node_level = OPERATOR_MAP[node.op][0]
-            if node_level < self_level:
+            if node_level < self_level or self.scoped:
                 self.replace(node)
                 replaced = True
 

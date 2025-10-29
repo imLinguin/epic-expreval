@@ -67,6 +67,7 @@ class Tokenizer:
                 n, cn = scopes.pop()
                 node, current_node = scopes[-1]
                 if node is None:
+                    n.scoped = True
                     node = n
                     current_node = n
                 else:
