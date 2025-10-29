@@ -63,8 +63,3 @@ tk.compile()
 tk.execute("<input here>")
 ```
 
-
-## Remarks
-
-At the moment the library doesn't handle short-circuting in AND (&&) statements
-
